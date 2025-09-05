@@ -1,14 +1,29 @@
+<script setup>
+import { isAuthenticated, logout } from '../auth'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const doLogout = () => { logout(); router.push('/login') }
+</script>
+
 <template>
-  <!-- Using Bootstrap's Header template (starter code) -->
-  <!-- https://getbootstrap.com/docs/5.0/examples/headers/ -->
   <div class="container">
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a href="#" class="nav-link active" aria-current="page">Home (Week 4)</a>
+          <router-link to="/" class="nav-link" active-class="active">Home (Week 5)</router-link>
         </li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Contact us</a></li>
+        <li class="nav-item">
+          <router-link to="/about" class="nav-link" active-class="active">About</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/contact" class="nav-link" active-class="active">Contact us</router-link>
+        </li>
+        <li class="nav-item" v-if="!isAuthenticated">
+          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+        </li>
+        <li class="nav-item" v-else>
+          <button class="nav-link btn btn-link p-0" @click="doLogout">Logout</button>
+        </li>
       </ul>
     </header>
   </div>
@@ -24,29 +39,12 @@
     inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
     inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
 }
-
-.form-control-dark {
-  color: #fff;
-  background-color: var(--bs-dark);
-  border-color: var(--bs-gray);
-}
+.form-control-dark { color:#fff; background-color:var(--bs-dark); border-color:var(--bs-gray); }
 .form-control-dark:focus {
-  color: #fff;
-  background-color: var(--bs-dark);
-  border-color: #fff;
-  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+  color:#fff; background-color:var(--bs-dark); border-color:#fff;
+  box-shadow:0 0 0 0.25rem rgba(255,255,255,.25);
 }
-
-.bi {
-  vertical-align: -0.125em;
-  fill: currentColor;
-}
-
-.text-small {
-  font-size: 85%;
-}
-
-.dropdown-toggle {
-  outline: 0;
-}
+.bi { vertical-align:-0.125em; fill:currentColor; }
+.text-small { font-size:85%; }
+.dropdown-toggle { outline:0; }
 </style>
