@@ -1,18 +1,23 @@
 import { ref } from 'vue'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 
 export const isAuthenticated = ref(false)
+export const currentUser = ref(null)
 
-const USER = 'admin'
-const PASS = 'Password123!'
+const auth = getAuth()
 
-export function login(username, password) {
-  if (username === USER && password === PASS) {
+onAuthStateChanged(auth, (user) => {
+  if (user) {
     isAuthenticated.value = true
-    return true
+    currentUser.value = user
+  } else {
+    isAuthenticated.value = false
+    currentUser.value = null
   }
-  return false
-}
+})
 
-export function logout() {
+export async function logout() {
+  await signOut(auth)
   isAuthenticated.value = false
+  currentUser.value = null
 }

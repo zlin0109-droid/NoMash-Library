@@ -1,28 +1,21 @@
-<script setup>
-import { isAuthenticated, logout } from '../auth'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-const doLogout = () => { logout(); router.push('/login') }
-</script>
-
 <template>
   <div class="container">
-    <header class="d-flex justify-content-center py-3">
+    <header class="flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <router-link to="/" class="nav-link" active-class="active">Home (Week 5)</router-link>
+          <router-link to="/" class="nav-link active">Home</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/about" class="nav-link" active-class="active">About</router-link>
+          <router-link to="/about" class="nav-link active">About</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/contact" class="nav-link" active-class="active">Contact us</router-link>
+          <router-link to="/accessdenied" class="nav-link active">Access Denied</router-link>
         </li>
-        <li class="nav-item" v-if="!isAuthenticated">
-          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+        <li class="nav-item">
+          <router-link to="/FireLogin" class="nav-link active">Firebase Login</router-link>
         </li>
-        <li class="nav-item" v-else>
-          <button class="nav-link btn btn-link p-0" @click="doLogout">Logout</button>
+        <li class="nav-item">
+          <router-link to="/FireRegister" class="nav-link active">Register</router-link>
         </li>
       </ul>
     </header>
@@ -30,21 +23,17 @@ const doLogout = () => { logout(); router.push('/login') }
 </template>
 
 <style scoped>
-.b-example-divider {
-  height: 3rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  border: solid rgba(0, 0, 0, 0.15);
-  border-width: 1px 0;
-  box-shadow:
-    inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
-    inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
+.container {
+  background-color: #f8f9fa;
 }
-.form-control-dark { color:#fff; background-color:var(--bs-dark); border-color:var(--bs-gray); }
-.form-control-dark:focus {
-  color:#fff; background-color:var(--bs-dark); border-color:#fff;
-  box-shadow:0 0 0 0.25rem rgba(255,255,255,.25);
+.nav-pills {
+  display: flex;
+  gap: 12px;
 }
-.bi { vertical-align:-0.125em; fill:currentColor; }
-.text-small { font-size:85%; }
-.dropdown-toggle { outline:0; }
+.nav-link {
+  color: #007bff;
+}
+.nav-link:hover {
+  color: #0056b3;
+}
 </style>

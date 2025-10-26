@@ -19,13 +19,12 @@ const errors = ref({
   username: null,
   password: null,
   confirmPassword: null,
-  resident: null,
   gender: null,
   reason: null
 })
 
 const validateName = (blur) => {
-  if (formData.value.username.length < 3) {
+  if (formData.value.username.trim().length < 3) {
     if (blur) errors.value.username = 'Name must be at least 3 characters'
   } else {
     errors.value.username = null
@@ -50,13 +49,23 @@ const validateConfirmPassword = (blur) => {
   }
 }
 
+const validateGender = () => {
+  errors.value.gender = formData.value.gender ? null : 'Gender is required'
+}
+
+const validateReason = () => {
+  errors.value.reason = formData.value.reason.trim() ? null : 'Reason is required'
+}
+
 const hasFriend = computed(() => formData.value.reason.toLowerCase().includes('friend'))
 
 const submitForm = () => {
   validateName(true)
   validatePassword(true)
   validateConfirmPassword(true)
-  if (!errors.value.username && !errors.value.password && !errors.value.confirmPassword) {
+  validateGender()
+  validateReason()
+  if (!errors.value.username && !errors.value.password && !errors.value.confirmPassword && !errors.value.gender && !errors.value.reason) {
     submittedCards.value.push({ ...formData.value })
     clearForm()
   }
@@ -70,7 +79,7 @@ const clearForm = () => {
     isAustralian: false,
     reason: '',
     gender: '',
-    suburb: ''
+    suburb: 'Clayton'
   }
   Object.keys(errors.value).forEach(k => (errors.value[k] = null))
 }
@@ -78,7 +87,7 @@ const clearForm = () => {
 
 <template>
   <div class="container mt-5">
-    <h1 class="text-center">🗄️ W5. Library Registration Form</h1>
+    <h1 class="text-center"> Library Registration Form</h1>
     <p class="text-center">Let's build some more advanced features into our form.</p>
 
     <form @submit.prevent="submitForm">
@@ -97,12 +106,13 @@ const clearForm = () => {
         </div>
         <div class="col-md-6 col-sm-6">
           <label for="gender" class="form-label">Gender</label>
-          <select id="gender" class="form-select" v-model="formData.gender">
+          <select id="gender" class="form-select" v-model="formData.gender" @change="validateGender">
             <option value="" disabled>Select…</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+          <div v-if="errors.gender" class="text-danger">{{ errors.gender }}</div>
         </div>
       </div>
 
@@ -143,8 +153,9 @@ const clearForm = () => {
 
       <div class="mb-3">
         <label for="reason" class="form-label">Reason for joining</label>
-        <textarea id="reason" class="form-control" rows="3" v-model="formData.reason"></textarea>
+        <textarea id="reason" class="form-control" rows="3" v-model="formData.reason" @blur="validateReason"></textarea>
         <div v-if="hasFriend" class="text-success mt-1">Great to have a friend</div>
+        <div v-if="errors.reason" class="text-danger mt-1">{{ errors.reason }}</div>
       </div>
 
       <div class="mb-3">
